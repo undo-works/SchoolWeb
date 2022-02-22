@@ -48,33 +48,36 @@ public class MainServlet extends HttpServlet {
 		String searchTel = request.getParameter("tel");
 		String searchName = request.getParameter("name");
 		CustomerSearchDBAccess dao = new CustomerSearchDBAccess();
-		if(!searchTel.equals("") && !searchName.equals("")) {
-			try {
-				ArrayList<Customer> list = dao.searchCustomer(searchTel,searchName);
-				request.setAttribute("list", list);
-				rd = request.getRequestDispatcher("/CustomerSearch.jsp");
-			}catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-		}else if(!searchTel.equals("")) {
-			try {
-				ArrayList<Customer> telList = dao.searchCustomerByTel(searchTel);
-				request.setAttribute("list", telList);
-				rd = request.getRequestDispatcher("/CustomerSearch.jsp");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-		}else if(!searchName.equals("")) {
-			try {
-				ArrayList<Customer> nameList = dao.searchCustomerByKana(searchName);
-				request.setAttribute("list", nameList);
-				rd = request.getRequestDispatcher("/CustomerSearch.jsp");
-			} catch (Exception e) {
-				e.printStackTrace();
+		if(searchTel != null && searchName != null) {
+			if(!searchTel.equals("") && !searchName.equals("")) {
+				try {
+					ArrayList<Customer> list = dao.searchCustomer(searchTel,searchName);
+					request.setAttribute("list", list);
+					rd = request.getRequestDispatcher("/CustomerSearch.jsp");
+				}catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+			}else if(!searchTel.equals("")) {
+				try {
+					ArrayList<Customer> telList = dao.searchCustomerByTel(searchTel);
+					request.setAttribute("list", telList);
+					rd = request.getRequestDispatcher("/CustomerSearch.jsp");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+			}else if(!searchName.equals("")) {
+				try {
+					ArrayList<Customer> nameList = dao.searchCustomerByKana(searchName);
+					request.setAttribute("list", nameList);
+					rd = request.getRequestDispatcher("/CustomerSearch.jsp");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
+		
 		rd.forward(request, response);
 	}
 

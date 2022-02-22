@@ -23,15 +23,21 @@
 			<th>住所</th>
 		</tr>
 		
+		<a onclick='<c:redirect url="/SchoolWeb/MainServlet"></c:redirect>'>
+		<tr>
 		<c:forEach items="${ list }" var="obj" varStatus="status">
-			<tr>
+			
+			
 				<td><c:out value="${ obj.custId }"></c:out></td>
 				<td><c:out value="${ obj.custName }"></c:out></td>
 				<td><c:out value="${ obj.kana }"></c:out></td>
 				<td><c:out value="${ obj.address }"></c:out></td>
-			</tr>	
+				
+			
+			
 		</c:forEach>
-		
+		</tr>
+		</a>
 	</table>
 	
 </body>
