@@ -40,7 +40,24 @@ public class MainServlet extends HttpServlet {
 		//flagの内容によって異なる処理
 		RequestDispatcher rd = null;
 		if(flag != null && flag.equals("01 注文管理")) {
+			//注文管理画面へフォワード
 			rd = request.getRequestDispatcher("/CustomerSearch.jsp");
+			
+		}else if(flag != null && flag.equals("06")) {
+			//注文/配達確認/顧客情報変更画面へフォワード
+			//顧客番号の取り出し
+			String custId = request.getParameter("custId");
+			
+			//顧客検索を行い、beanに格納
+			CustomerSearchDBAccess dao = new CustomerSearchDBAccess();
+			Customer customer = new Customer();
+			try {
+				customer = dao.searchCustomerByCustId(Integer.parseInt(custId));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			request.setAttribute("customer", customer);
+			rd = request.getRequestDispatcher("/OrderInput.jsp");
 		}
 		//RequestDispatcher rd = request.getRequestDispatcher("/TestFile.jsp");
 		
@@ -48,35 +65,37 @@ public class MainServlet extends HttpServlet {
 		String searchTel = request.getParameter("tel");
 		String searchName = request.getParameter("name");
 		CustomerSearchDBAccess dao = new CustomerSearchDBAccess();
-		if(searchTel != null && searchName != null) {
-			if(!searchTel.equals("") && !searchName.equals("")) {
-				try {
-					ArrayList<Customer> list = dao.searchCustomer(searchTel,searchName);
-					request.setAttribute("list", list);
-					rd = request.getRequestDispatcher("/CustomerSearch.jsp");
-				}catch (Exception e) {
-					e.printStackTrace();
-				}
-				
-			}else if(!searchTel.equals("")) {
-				try {
-					ArrayList<Customer> telList = dao.searchCustomerByTel(searchTel);
-					request.setAttribute("list", telList);
-					rd = request.getRequestDispatcher("/CustomerSearch.jsp");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				
-			}else if(!searchName.equals("")) {
-				try {
-					ArrayList<Customer> nameList = dao.searchCustomerByKana(searchName);
-					request.setAttribute("list", nameList);
-					rd = request.getRequestDispatcher("/CustomerSearch.jsp");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		
+		if(!"".equals(searchTel) && !"".equals(searchName) && searchTel != null && searchName != null) {
+			try {
+				ArrayList<Customer> list = dao.searchCustomer(searchTel,searchName);
+				request.setAttribute("list", list);
+				rd = request.getRequestDispatcher("/CustomerSearch.jsp");
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}else if(!"".equals(searchTel) && searchTel != null) {
+			try {
+				ArrayList<Customer> telList = dao.searchCustomerByTel(searchTel);
+				request.setAttribute("list", telList);
+				rd = request.getRequestDispatcher("/CustomerSearch.jsp");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}else if(!"".equals(searchName) && searchName != null) {
+			try {
+				ArrayList<Customer> nameList = dao.searchCustomerByKana(searchName);
+				request.setAttribute("list", nameList);
+				rd = request.getRequestDispatcher("/CustomerSearch.jsp");
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
+		
+	
+		
 		
 		rd.forward(request, response);
 	}

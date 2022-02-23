@@ -13,6 +13,7 @@
 		<p>氏名(全角カタカナ)<input type="text" name="name" /><br/>例：佐藤 太郎</p>
 		<input type="submit" value="検索"/>
 		<input type="reset" value="リセット">
+		<input type="hidden" name="flag" value="01">
 	</form>	
 	
 	<table border="1">
@@ -22,22 +23,17 @@
 			<th>カナ</th>
 			<th>住所</th>
 		</tr>
-		
-		<a onclick='<c:redirect url="/SchoolWeb/MainServlet"></c:redirect>'>
-		<tr>
+
 		<c:forEach items="${ list }" var="obj" varStatus="status">
-			
-			
-				<td><c:out value="${ obj.custId }"></c:out></td>
+			<tr>
+				<td><a href="<c:url value="/MainServlet"><c:param name="custId" value="${obj.custId}" /><c:param name="flag" value="06" /></c:url>"><c:out value="${ obj.custId }"></c:out></a></td>
 				<td><c:out value="${ obj.custName }"></c:out></td>
 				<td><c:out value="${ obj.kana }"></c:out></td>
 				<td><c:out value="${ obj.address }"></c:out></td>
-				
-			
+			</tr>
 			
 		</c:forEach>
-		</tr>
-		</a>
+		
 	</table>
 	
 </body>
