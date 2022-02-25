@@ -10,15 +10,15 @@
 	<h2>メインメニュー</h2>
 	<br /> 
 	<form action="/SchoolWeb/MainServlet" method="get">
-		<input type="submit" name="flag" value="01 注文管理" />
+		<button name="flag" value="01">01 注文管理</button>
 		<br />
-		<input type="submit" name="flag" value="02 注文一覧"/>
+		<button name="flag" value="02">02 注文一覧</button>
 		<br />
-		<input type="submit" name="flag" value="03 新規顧客登録" />
+		<button name="flag" value="03">03 新規顧客登録</button>
 		<br />
-		<input type="submit" name="flag" value="04 商品情報登録・変更" />
+		<button name="flag" value="04">04 商品情報登録・変更</button>
 		<br />
-		<input type="submit" name="flag" value="05 CSVファイル出力" />
+		<button name="flag" value="05">05 CSVファイル出力</button>
 	</form>
 
 </body>

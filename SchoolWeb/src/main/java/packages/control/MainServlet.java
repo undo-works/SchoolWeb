@@ -11,7 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import packages.bean.Customer;
+import packages.bean.Item;
+import packages.bean.Tax;
 import packages.dao.CustomerSearchDBAccess;
+import packages.dao.ItemMenuDisplayDBAccess;
+import packages.dao.TaxSearchDBAccess;
 
 /**
  * Servlet implementation class MainServlet
@@ -39,7 +43,7 @@ public class MainServlet extends HttpServlet {
 		
 		//flagの内容によって異なる処理
 		RequestDispatcher rd = null;
-		if(flag != null && flag.equals("01 注文管理")) {
+		if(flag != null && flag.equals("01")) {
 			//注文管理画面へフォワード
 			rd = request.getRequestDispatcher("/CustomerSearch.jsp");
 			
@@ -47,18 +51,37 @@ public class MainServlet extends HttpServlet {
 			//注文/配達確認/顧客情報変更画面へフォワード
 			//顧客番号の取り出し
 			String custId = request.getParameter("custId");
+			String item = request.getParameter("item");
 			
 			//顧客検索を行い、beanに格納
 			CustomerSearchDBAccess dao = new CustomerSearchDBAccess();
+			ItemMenuDisplayDBAccess imddao = new ItemMenuDisplayDBAccess();
+			TaxSearchDBAccess tdao = new TaxSearchDBAccess();
+			
 			Customer customer = new Customer();
+			ArrayList<Item> itemList = new ArrayList<Item>();
+			Tax tax = new Tax();
+			
 			try {
 				customer = dao.searchCustomerByCustId(Integer.parseInt(custId));
+				
+				if("item".equals(item)) {
+					itemList = imddao.searchAllItem();
+					tax = tdao.searchCurrentTax();
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+				
 			request.setAttribute("customer", customer);
+			request.setAttribute("itemList", itemList);
+			request.setAttribute("tax", tax);
 			rd = request.getRequestDispatcher("/OrderInput.jsp");
+		
+		}else if(flag != null && flag.equals("10")) {
+			rd = request.getRequestDispatcher("/DeliveryConfirm.jsp");
 		}
+		
 		//RequestDispatcher rd = request.getRequestDispatcher("/TestFile.jsp");
 		
 		//以下、顧客情報検索処理
