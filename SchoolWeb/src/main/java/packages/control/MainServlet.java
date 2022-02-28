@@ -79,6 +79,7 @@ public class MainServlet extends HttpServlet {
 			rd = request.getRequestDispatcher("/OrderInput.jsp");
 		
 		}else if(flag != null && flag.equals("10")) {
+			
 			rd = request.getRequestDispatcher("/DeliveryConfirm.jsp");
 		}
 		

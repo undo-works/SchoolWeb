@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="javax.script.ScriptEngine" %>
+<%@ page import="javax.script.ScriptEngineManager" %>
+<%@ page import="javax.script.ScriptException" %>    
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>     
 <!DOCTYPE html>
@@ -8,20 +11,16 @@
 <meta charset="UTF-8">
 <title>【注文/配達確認/顧客情報変更】</title>
 <script>
-function register(){
+/*function register(){
 	var result = window.confirm('注文情報を登録します。よろしいですか？');
-	
-	<%
-	
-	%>
-    
-    if( result ) {
-       　window.location.href='/SchoolWeb/MainServlet';
-    }
-    else {
-        console.log('キャンセルがクリックされました');
-    }
-}
+	if( result ) {
+		//window.location.href='/SchoolWeb/MainServlet';
+		xhr.open('POST', '/SchoolWeb/MainServlet', true);
+		xhr.send();
+	}else {
+		console.log('キャンセルがクリックされました');
+	}
+}*/
 </script>
 </head>
 <body>
@@ -39,7 +38,23 @@ function register(){
 		<button name="flag" value="09">顧客情報変更</button>
 	</form>
 	<hr/>
-	<form name="myform" onsubmit="register()">
+	
+<% 
+	/*
+    ScriptEngineManager sem = new ScriptEngineManager();
+    ScriptEngine se = sem.getEngineByName("JavaScript");
+    String script ="var result = window.confirm('注文情報を登録します。よろしいですか？');";
+    String script2 = "if( result ) {window.location.href='/SchoolWeb/MainServlet';}";
+	String script3 = "else {console.log('キャンセルがクリックされました');}";
+    try {
+        se.eval(script+script2+script3);
+    } catch (ScriptException e) {
+        e.printStackTrace();
+    }
+    */
+%>	
+	<form name="myform" action="/SchoolWeb/MainServlet" method="post">
+		<input type="hidden" name="custId" value="">
 		<table border="1">
 			<tr>
 				<th>ID</th>
@@ -55,7 +70,7 @@ function register(){
 					<td><c:out value="${ obj.itemName }"></c:out></td>
 					<td><c:out value="${ obj.size }"></c:out></td>
 					<td><input type="text" name="quantity${ status.index }">
-					<fmt:formatNumber var="rate" value="${obj.price*(1+tax.rate)}" maxFractionDigits="0"></fmt:formatNumber> 
+					<fmt:formatNumber var="rate" value="${obj.price*(1+tax.rate)}" maxFractionDigits="0"></fmt:formatNumber></td> 
 					<td><c:out value="${ rate }"></c:out></td>
 				</tr>	
 			</c:forEach>	
